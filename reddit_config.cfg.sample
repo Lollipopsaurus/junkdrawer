@@ -1,0 +1,9 @@
+{
+    "targets" : {
+        "980c":"leopold",
+    },
+    "twilio_user" : "youruserhere",
+    "twilio_auth_token" : "yourauthhere",
+    "to_phone" : "1231231234",
+    "from_phone" : "1231231234"
+}
