@@ -1,5 +1,5 @@
 # Junkdrawer
-Playing around with reddit's API and bots.
+Playing around with getting alerts and such from various locations like reddit or ebay into various platforms for alerting like Discord, sms, possibly reddit pms.
 The project is not meant to be serious.
 The idea here is to scrape new things on reddit, send alerts based on specific criteria, and cache results to prevent repeat alerts.
 I'm not responsible for anything you do with this.
