@@ -14,8 +14,11 @@ configs = {}
 def scrape_rss_posts(rss_url, file_name, configs):
     stored_posts = []
     targets = configs['targets']
+    report = True
     if os.path.isfile(file_name):
         stored_posts = read_temp(file_name)
+    else:
+        report = False
 
     # Scrapes reddit
     d = feedparser.parse(rss_url)
@@ -34,11 +37,12 @@ def scrape_rss_posts(rss_url, file_name, configs):
                 for item in data:
                     for target in targets:
                         if target in item:
-                            stanza = item + ' found, it could be a ' + targets[item] + ' link:' + entry.link
+                            stanza = item + ' found! link: ' + entry.link
                             if sms:
                                 #sms(stanza)
                                 print('entry')
-                            alert_response.append(stanza)
+                            if report:
+                                alert_response.append(stanza)
         #TODO bug here, if you don't have a raw_entry (your post is empty), you don't get written to disk. Needs to use entire post as the md5
         #else:
     write_temp(to_store_posts, file_name)
