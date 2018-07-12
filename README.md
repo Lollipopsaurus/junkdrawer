@@ -1,8 +1,14 @@
 # Junkdrawer
-Playing around with reddit's API and bots.
+Playing around with getting alerts and such from various locations like reddit or ebay into various platforms for alerting like Discord, sms, possibly reddit pms.
+
 The project is not meant to be serious.
+
 The idea here is to scrape new things on reddit, send alerts based on specific criteria, and cache results to prevent repeat alerts.
+
 I'm not responsible for anything you do with this.
+
+# Warranty
+Full text search is hard. I can't guarantee this will find the exact item you're looking for with no false positives. In fact, you'll probably get a ton of spam for things that are close or on want lists. That's better than nothing though, isn't it? If you want a system that will do that reliably, every time, find someone with hardcore regex experience that will program something up for you.
 
 ## Description
 
@@ -12,6 +18,9 @@ The project is designed to run locally on a Linux machine, and not require any e
 
 I'm pretty lazy, and almost fully depend on RSS feeds to make this work. If you find bugs or anything, please let me know, and I'll fix it when I can.
 
+### Reddit Scraper
+
+
 ## Instructions for use:
 
 For real use, copy the .sample configs to the same file name without ".sample". Fill them out with your information for your bot data, etc. Some elements are hard coded, as I'm still working on how to appropriately handle large sets of inputs and types along with variants of search.
@@ -20,7 +29,7 @@ In reddit_config.cfg, you can set a JSON object of a list of targets to search f
 
 ## Setup:
 
-You need Python 3.5 or higher installed for it to work due to the discord dependencies. You can install the required libraries through Python3's pip. It's likely aliased to "pip3" if you have it.
+You need Python 3.5 or higher installed for it to work due to Discord's dependencies. You can install the required libraries through Python3's pip. It's likely aliased to "pip3" if you have it. If you have any issues with that, either you're using the wrong version of python, or I'm dumb and forgot to include something in requirements.txt.
 
 So, run:
 
@@ -35,4 +44,13 @@ to install all the necessary libraries.
 python3 discord_bot.py
 ```
 
-If you'd like, you can run it in the background forever.
+If you'd like, you can run it in the background forever. 
+
+# Pending updates:
+
+I'm working on decoupling discord from the alerting functionality. I want to create a generic layer that can be consumed by different alerting services that simply include discord. Discord is only the first consumer.
+
+
+# Pull Requests
+
+Feel free to contribute and add to the project.
