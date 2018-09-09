@@ -29,7 +29,7 @@ def scrape_url(url, file_name):
     if os.path.isfile(file_name):
         stored_posts = read_temp(file_name)
     session = requests.Session()
-    login_stuff = login(session, 'dennyroxsox', 'loser123')
+    login_stuff = login(session, '', '')
     print(session.cookies)
     print('my cookies')
     #session.auth = ('dennyroxsox', 'loser123')
