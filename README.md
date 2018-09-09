@@ -43,7 +43,7 @@ What? You don't have python3 or pip3? Go here and install this: https://www.pyth
 
 ### Execution:
 ```
-python3 discord_bot.py
+python3 main.py
 ```
 
 If you'd like, you can run it in the background forever. Right now there are exceptions that get thrown out because of how I'm exiting the discord bot's loop. I'll fix it so it doesn't complain at some point.
