@@ -1,0 +1,6 @@
+sendsms
+beautifulsoup4
+feedparser
+html5lib
+discord.py
+twilio
