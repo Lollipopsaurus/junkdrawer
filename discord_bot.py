@@ -18,7 +18,7 @@ async def reddit_background_task(configs):
     while not client.is_closed:
         stuff = reddit_scraper.main()
         for item in stuff:
-            await client.send_message(channel, configs['user_id'] + ' item found! '+ item)
+            await client.send_message(channel, '@here item found! '+ item)
         await asyncio.sleep(configs['period']) # task runs every 30 seconds
 
 async def ebay_background_task(configs):
@@ -27,7 +27,7 @@ async def ebay_background_task(configs):
     while not client.is_closed:
         stuff = ebay_scraper.main()
         for item in stuff:
-            await client.send_message(channel, configs['user_id'] + ' item found! '+ item)
+            await client.send_message(channel,  '@here item found! '+ item)
         await asyncio.sleep(configs['period']) # task runs every 30 seconds
 
 async def gh_background_task(configs):
@@ -49,5 +49,5 @@ async def on_ready():
 configs = get_configs()
 client.loop.create_task(reddit_background_task(configs))
 client.loop.create_task(ebay_background_task(configs))
-client.loop.create_task(gh_background_task(configs))
+#client.loop.create_task(gh_background_task(configs))
 client.run(configs['bot_auth']) 

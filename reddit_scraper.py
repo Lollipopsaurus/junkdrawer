@@ -34,7 +34,8 @@ def scrape_rss_posts(rss_url, file_name, configs):
                 for item in data:
                     for target in targets:
                         if target in item:
-                            stanza = item + ' found, it could be a ' + targets[item] + ' link:' + entry.link
+                            print(data) 
+                            stanza = item + ' found, link:' + entry.link
                             if sms:
                                 #sms(stanza)
                                 print('entry')
