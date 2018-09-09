@@ -1,7 +1,10 @@
 # Junkdrawer
-Playing around with reddit's API and bots.
-The project is not meant to be serious.
+Playing around with getting alerts and such from various locations like reddit or ebay into various platforms for alerting like Discord, sms, possibly reddit pms.
+
+The project is not meant to be serious... yet.
+
 The idea here is to scrape new things on reddit, send alerts based on specific criteria, and cache results to prevent repeat alerts.
+
 I'm not responsible for anything you do with this.
 
 # Warranty
@@ -20,13 +23,13 @@ I'm pretty lazy, and almost fully depend on RSS feeds to make this work. If you 
 
 ## Instructions for use:
 
-For real use, copy the .sample configs to the same file name without ".sample". Fill them out with your information for your bot data, etc. Some elements are hard coded, as I'm still working on how to appropriately handle large sets of inputs and types along with variants of search.
+For real use, copy the .sample configs to the same file name without ".sample" into the directory for this project. Fill them out with your information for your bot data, etc. Some elements are hard coded, as I'm still working on how to appropriately handle large sets of inputs and types along with variants of search.
 
 In reddit_config.cfg, you can set a JSON object of a list of targets to search for. The keys of the key/value pairs are the actual string to be searched, and the value is a qualifier to help identify what the thing is. Similar options exist for the other configuration files.
 
 ## Setup:
 
-You need Python 3.5 or higher installed for it to work due to the discord dependencies. You can install the required libraries through Python3's pip. It's likely aliased to "pip3" if you have it.
+You need Python 3.5 or higher installed for it to work due to Discord's dependencies. You can install the required libraries through Python3's pip. It's likely aliased to "pip3" if you have it. If you have any issues with that, either you're using the wrong version of python, or I'm dumb and forgot to include something in requirements.txt.
 
 So, run:
 
@@ -34,11 +37,24 @@ So, run:
 pip3 install -r requirements.txt
 ```
 
-to install all the necessary libraries.
+to install all the necessary libraries. 
+
+What? You don't have python3 or pip3? Go here and install this: https://www.python.org/downloads/ Jesus...
 
 ### Execution:
 ```
 python3 discord_bot.py
 ```
 
-If you'd like, you can run it in the background forever.
+If you'd like, you can run it in the background forever. Right now there are exceptions that get thrown out because of how I'm exiting the discord bot's loop. I'll fix it so it doesn't complain at some point.
+
+# Pending updates:
+
+Events are now decoupled. I need a not shitty way of caching events without using a ton of system resources, so they're in text files for now.
+
+I intend to improve the targeting functionality soon. I'd like to add user profiles that link to a discord id, reddit username, etc. that will be on the list of who to dm or message when an event occurs.
+
+
+# Pull Requests
+
+Feel free to contribute and add to the project.
