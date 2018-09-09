@@ -19,24 +19,33 @@ async def send_mess(messages):
     for message in messages:
         await client.send_message(channel, message)
 
+# on_ready function
 @client.event
 async def on_ready():
     client.wait_until_ready()
+    # Bad logging to show that the bot ran
     print('Logged in as')
     print(client.user.name)
     print(client.user.id)
     print('------')
+
     channel = discord.Object(id=configs['channel_id'])
     count = 0
+
+    # Open the notification file (can be whatever notification queue in the future)
     with open('notifications.txt', 'r') as message_list:
         json_obj = json.loads(message_list.read())
+        # Send the message for each item in the file
         for message in json_obj:
             await client.send_message(channel, '' + message)
-            count += 1
-        if count == len(json_obj):
-            for task in asyncio.Task.all_tasks():
+            #count += 1
+        # If we reach the end, 
+        #if count == len(json_obj):
+        for task in asyncio.Task.all_tasks():
+            try:
                 task.cancel()
-            #client.loop.stop()
+            except Exception as e:
+                pass
 
 configs = get_configs()
 def main():
