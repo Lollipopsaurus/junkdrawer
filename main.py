@@ -25,7 +25,6 @@ def write_temp(data):
 def add_to_list(existing_list, new_list):
     for item in new_list:
         if item not in existing_list:
-            print(item)
             existing_list.append(item)
     return existing_list
 

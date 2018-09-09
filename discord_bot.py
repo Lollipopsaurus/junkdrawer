@@ -13,6 +13,24 @@ def get_configs():
         configs = json.load(configs)
         return configs
 
+async def reddit_background_task(configs):
+    await client.wait_until_ready()
+    channel = discord.Object(id=configs['channel_id'])
+    while not client.is_closed:
+        stuff = reddit_scraper.main()
+        for item in stuff:
+            await client.send_message(channel, 'item found! '+ item)
+        await asyncio.sleep(configs['period']) # task runs every 30 seconds
+
+async def ebay_background_task(configs):
+    await client.wait_until_ready()
+    channel = discord.Object(id=configs['channel_id'])
+    while not client.is_closed:
+        stuff = ebay_scraper.main()
+        for item in stuff:
+            await client.send_message(channel,  'item found! '+ item)
+        await asyncio.sleep(configs['period']) # task runs every 30 seconds
+
 async def send_mess(messages):
     await client.wait_until_ready()
     channel = discord.Object(id=configs['channel_id'])
@@ -46,8 +64,11 @@ async def on_ready():
                 task.cancel()
             except Exception as e:
                 pass
+            client.loop.stop()
 
 configs = get_configs()
+
+#client.run(configs['bot_auth']) 
 def main():
     #client.run(configs['bot_auth'])
     try:
@@ -60,4 +81,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
