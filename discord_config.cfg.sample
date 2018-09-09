@@ -1,0 +1,6 @@
+{
+    "channel_id" : "your channel id here",
+    "user_id" : "<@youruserid here>",
+    "bot_auth" : "token",
+    "period" : 30
+}
