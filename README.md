@@ -39,7 +39,7 @@ pip3 install -r requirements.txt
 
 to install all the necessary libraries. 
 
-What? You don't have python3 or pip3? Go here and install this: https://www.python.org/downloads/ Jesus...
+What? You don't have python3 or pip3? Go here and install this: https://www.python.org/downloads/ I'm on 3.5.2. Lord help you here.
 
 ### Execution:
 ```
