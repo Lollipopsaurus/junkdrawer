@@ -32,7 +32,7 @@ def scrape_url(url, file_name):
     login_stuff = login(session, '', '')
     print(session.cookies)
     print('my cookies')
-    #session.auth = ('dennyroxsox', 'loser123')
+    #session.auth = ('', '')
     # Scrapes reddit
     d = session.get(url)
     print(d.text) 
