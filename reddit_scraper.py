@@ -39,13 +39,14 @@ def scrape_rss_posts(rss_url, file_name, configs):
                 for target in targets.items():
                     if isinstance(target[1], str):
                         if target[1] in entry.title or target[1] in entry.summary:
-                            match = True
+                            match = target[1]
                     else:
-                        if target[1].match(entry.title) or target[1].match(entry.summary):
-                            match = True
+                        this_match = target[1].match(entry.title) or target[1].match(entry.summary)
+                        if this_match:
+                            match = this_match.group()
 
                 if match:
-                    stanza = 'Match found! link: ' + entry.link
+                    stanza = match + ' found! link: ' + entry.link
                     if sms:
                         #sms(stanza)
                         print('entry')
