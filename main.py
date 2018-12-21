@@ -29,22 +29,27 @@ def add_to_list(existing_list, new_list):
     return existing_list
 
 def main():
-    while True:
-        data_block = []
-        if True:
-            reddit_data = reddit_scraper.main()
-            data_block = add_to_list(data_block, reddit_data)
-        if True:
-            ebay_data = ebay_scraper.main()
-            data_block = add_to_list(data_block, ebay_data)
-        #if True:
-        #    gh_data = gh_scraper.main()
-        #    data_block = add_to_list(data_block, gh_data)
-        write_temp(data_block) 
-        if len(data_block):
-            discord_bot.main()
-        time.sleep(30)
-        data_block = []
-        write_temp(data_block)
+    with open('user_profiles.cfg', 'r') as user_profiles:
+        for user in json.load(user_profiles):
+            while True:
+                data_block = []
+                if True:
+                    reddit_data = reddit_scraper.main(user)
+                    data_block = add_to_list(data_block, reddit_data)
+                if True:
+                    ebay_data = ebay_scraper.main(user)
+                    data_block = add_to_list(data_block, ebay_data)
+                if True:
+                    gh_data = gh_scraper.main(user)
+                    data_block = add_to_list(data_block, gh_data)
+                write_temp(data_block) 
+                if len(data_block):
+                    discord_bot.main()
+                time.sleep(30)
+                data_block = []
+                write_temp(data_block)
+
+
+
 if __name__ == "__main__":
     main()
