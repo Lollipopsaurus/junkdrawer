@@ -30,11 +30,14 @@ def add_to_list(existing_list, new_list):
 
 def main():
     with open('user_profiles.cfg', 'r') as user_profiles:
-        for user in json.load(user_profiles):
-            while True:
+        profiles = json.load(user_profiles)
+        while(True):
+            for user in profiles:
+                print('Running user profile: ' + user['name'])
                 data_block = []
                 if True:
                     reddit_data = reddit_scraper.main(user)
+                    print(reddit_data)
                     data_block = add_to_list(data_block, reddit_data)
                 if True:
                     ebay_data = ebay_scraper.main(user)

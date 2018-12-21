@@ -12,7 +12,7 @@ from twilio.rest import Client
 sms = False
 configs = {}
 
-def scrape_rss_posts(rss_url, file_name, configs, username):
+def scrape_rss_posts(rss_url, file_name, configs, username, user_id):
     stored_posts = []
     targets = configs['targets']
     report = True
@@ -38,7 +38,7 @@ def scrape_rss_posts(rss_url, file_name, configs, username):
 
                 for target in targets.items():
                     if isinstance(target[1], str):
-                        if target[1] in entry.title or target[1] in entry.summary:
+                        if target[1] in entry.title.lower() or target[1] in entry.summary.lower():
                             match = target[1]
                     else:
                         this_match = target[1].match(entry.title) or target[1].match(entry.summary)
@@ -46,7 +46,7 @@ def scrape_rss_posts(rss_url, file_name, configs, username):
                             match = this_match.group()
 
                 if match:
-                    stanza = '@' + username + ' ' + match + ' found! link: ' + entry.link
+                    stanza = '<@' + user_id + '> ' + match + ' found! link: ' + entry.link
                     if sms:
                         #sms(stanza)
                         print('entry')
@@ -58,7 +58,7 @@ def scrape_rss_posts(rss_url, file_name, configs, username):
     write_temp(to_store_posts, 'user_data/' + username + '/' + file_name)
     return alert_response
 
-def scrape_reddit_user(user, file_name):
+def scrape_reddit_user(user, file_name, user_id):
     stored_posts = []
     if os.path.isfile(file_name):
         stored_posts = read_temp(file_name)
@@ -88,6 +88,8 @@ def scrape_reddit_user(user, file_name):
 # Main that does stuff
 def main(user):
     configs = user['reddit_cfg']
+    username = user['name']
+    user_id = user['discord_id']
     targets = {}
 
     for target in configs['targets'].items():
@@ -98,8 +100,8 @@ def main(user):
 
     configs['targets'] = targets
 
-    alert_response = scrape_rss_posts('https://www.reddit.com/r/mechmarket/new/.rss?sort=new&limit=100', '/mech_100.txt', configs, user['name'])
-    alert_response += scrape_reddit_user('http://www.reddit.com/user/eat_the_food/.rss', 'user_data/' + user['name'] + '/mamcus.txt')
+    alert_response = scrape_rss_posts('https://www.reddit.com/r/mechmarket/new/.rss?sort=new&limit=100', 'user_data/' + username + '/mech_100.txt', configs, username, user_id)
+    alert_response += scrape_reddit_user('http://www.reddit.com/user/eat_the_food/.rss', 'user_data/' + username + '/mamcus.txt', user_id)
     return alert_response
 if __name__ == "__main__":
     main()
