@@ -55,7 +55,7 @@ def scrape_rss_posts(rss_url, file_name, configs, username, user_id):
 
         #TODO bug here, if you don't have a raw_entry (your post is empty), you don't get written to disk. Needs to use entire post as the md5
         #else:
-    write_temp(to_store_posts, 'user_data/' + username + '/' + file_name)
+    write_temp(to_store_posts, file_name)
     return alert_response
 
 def scrape_reddit_user(user, file_name, user_id):
@@ -75,7 +75,7 @@ def scrape_reddit_user(user, file_name, user_id):
             this_post_md5 = md5_post(raw_entry.text)
             to_store_posts.append(this_post_md5)
             if this_post_md5+'\n' not in stored_posts:
-                stanza = 'ETF ON REDDIT'
+                stanza = 'Possible ETF activity on reddit'
                 if sms:
                     #sms(stanza)
                     print('entry')
@@ -101,7 +101,7 @@ def main(user):
     configs['targets'] = targets
 
     alert_response = scrape_rss_posts('https://www.reddit.com/r/mechmarket/new/.rss?sort=new&limit=100', 'user_data/' + username + '/mech_100.txt', configs, username, user_id)
-    alert_response += scrape_reddit_user('http://www.reddit.com/user/eat_the_food/.rss', 'user_data/' + username + '/mamcus.txt', user_id)
+    alert_response += scrape_reddit_user('http://www.reddit.com/user/eat_the_food/.rss', 'user_data/mamcus.txt', user_id)
     return alert_response
 if __name__ == "__main__":
     main()

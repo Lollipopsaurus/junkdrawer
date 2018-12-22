@@ -32,6 +32,7 @@ def main():
     with open('user_profiles.cfg', 'r') as user_profiles:
         profiles = json.load(user_profiles)
         while(True):
+            #TODO spawn threads
             for user in profiles:
                 print('Running user profile: ' + user['name'])
                 data_block = []
@@ -48,9 +49,9 @@ def main():
                 write_temp(data_block) 
                 if len(data_block):
                     discord_bot.main()
-                time.sleep(30)
                 data_block = []
                 write_temp(data_block)
+            #TODO Join threads
 
 
 
