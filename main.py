@@ -38,7 +38,6 @@ def main():
                 data_block = []
                 if True:
                     reddit_data = reddit_scraper.main(user)
-                    print(reddit_data)
                     data_block = add_to_list(data_block, reddit_data)
                 if True:
                     ebay_data = ebay_scraper.main(user)
