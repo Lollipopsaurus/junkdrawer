@@ -28,7 +28,10 @@ def scrape_op_url(url, file_name, message):
     stored_posts = []
     if os.path.isfile(file_name):
         stored_posts = read_temp(file_name)
-    d = requests.get(url)
+    try: 
+        d = requests.get(url)
+    except Exception as e:
+        pass
     to_store_posts = []
     alert_response = []
     # Looping through all of the entries we scraped

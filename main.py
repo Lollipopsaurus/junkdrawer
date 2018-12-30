@@ -50,6 +50,7 @@ def main():
                     discord_bot.main()
                 data_block = []
                 write_temp(data_block)
+            time.sleep(3)
             #TODO Join threads
 
 

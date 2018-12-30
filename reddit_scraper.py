@@ -12,7 +12,7 @@ from twilio.rest import Client
 sms = False
 configs = {}
 
-def scrape_rss_posts(rss_url, file_name, configs, username, user_id):
+def scrape_rss_posts(rss_url, file_name, configs, user_id):
     stored_posts = []
     targets = configs['targets']
     report = True
@@ -96,7 +96,7 @@ def main(user):
 
     configs['targets'] = targets
 
-    alert_response = scrape_rss_posts('https://www.reddit.com/r/mechmarket/new/.rss?sort=new&limit=100', 'user_data/' + username + '/mech_100.txt', configs, username, user_id)
+    alert_response = scrape_rss_posts('https://www.reddit.com/r/mechmarket/new/.rss?sort=new&limit=100', 'user_data/' + username + '/mech_100.txt', configs, user_id)
     alert_response += scrape_reddit_user('http://www.reddit.com/user/eat_the_food/submitted/.rss', 'user_data/mamcus_reddit.txt', user_id, '<@&' + user['discord_role_id'] + '> Possible ETF activity on reddit')
     alert_response += scrape_reddit_user('http://www.reddit.com/user/poptart_777/submitted/.rss', 'user_data/poptart_reddit.txt', user_id, '<@&' + user['discord_role_id'] + '> Possible Switchnollie activity on reddit')
     return alert_response
