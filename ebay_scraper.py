@@ -9,7 +9,7 @@ import os
 
 hashes_file_name = 'ebay.txt'
 # Main that does stuff
-def main():
+def main(user):
     sms = False 
     stored_posts = []
     if os.path.isfile(hashes_file_name):
@@ -31,7 +31,7 @@ def main():
                 alert_response.append(stanza)
         #TODO bug here, if you don't have a raw_entry (your post is empty), you don't get written to disk. Needs to use entire post as the md5
         #else:
-    write_temp(to_store_posts, hashes_file_name)
+    write_temp(to_store_posts, 'user_data/' + user['name'] + '/' + hashes_file_name)
     return alert_response
 
 if __name__ == "__main__":
