@@ -34,6 +34,7 @@ async def on_ready():
         for task in asyncio.Task.all_tasks():
             try:
                 task.cancel()
+                await client.close()
             except Exception as e:
                 pass
             client.loop.stop()
