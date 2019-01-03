@@ -39,7 +39,6 @@ def read_temp(loc):
 def write_temp(data, file_name):
     os.makedirs(os.path.dirname(file_name), exist_ok=True)
     with open(file_name, 'w') as f:
-
         for item in data:
             f.write(item+'\n')
 
