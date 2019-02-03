@@ -35,6 +35,7 @@ async def on_ready():
             try:
                 task.cancel()
             except Exception as e:
+                print(e)
                 pass
             finally:
                 client.close()

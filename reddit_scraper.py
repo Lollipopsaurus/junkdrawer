@@ -18,8 +18,6 @@ def scrape_rss_posts(rss_url, file_name, configs):
     report = True
     if os.path.isfile(file_name):
         stored_posts = read_temp(file_name)
-    # else:
-    #     report = False
 
     # Scrapes reddit
     d = feedparser.parse(rss_url)
@@ -70,12 +68,14 @@ def scrape_reddit_user(reddit_url, file_name, user_id, message):
             this_post_md5 = md5_post(raw_entry.text)
             to_store_posts.append(this_post_md5)
             if this_post_md5+'\n' not in stored_posts and len(stored_posts) > 0:
-                stanza = message + ' ' + entry.link + ' ' + entry_text
-                print(this_post_md5)
-                print('Im a stupid piece of shit')
-                print(stored_posts)
-                print('-----------')
-                alert_response.append('WAKE UP MOTHAFUCKA <@337315573388148738>')
+                stanza = message + ' ' + entry.link + ' '
+                form_link = entry_text.find('http')
+                print(entry_text)
+                if form_link != -1:
+                    print('http')
+                    linkaroo = entry_text[form_link: form_link + 150]
+                    print(linkaroo)
+                    stanza += 'link to form: ' + linkaroo
                 alert_response.append(stanza)
         #TODO bug here, if you don't have a raw_entry (your post is empty), you don't get written to disk. Needs to use entire post as the md5
         #else:
@@ -97,9 +97,9 @@ def main(user):
 
     #configs['targets'] = targets
 
-    alert_response = scrape_rss_posts('https://www.reddit.com/r/mechmarket/new/.rss?sort=new&limit=100', 'user_data/' + username + '/mech_100.txt', user)
-    alert_response += scrape_reddit_user('http://www.reddit.com/user/eat_the_food/submitted/.rss', 'user_data/mamcus_reddit.txt', user_id, 'test spam until this is unfucked')#'<@&' + user['discord_role_id'] + '> Possible ETF activity on reddit')
-    alert_response += scrape_reddit_user('http://www.reddit.com/user/poptart_777/submitted/.rss', 'user_data/poptart_reddit.txt', user_id, 'test string until this is unfucked')#'<@&' + user['discord_role_id'] + '> Possible Switchnollie activity on reddit')
+    alert_response = scrape_rss_posts('https://www.reddit.com/r/mechmarket/new/.rss?sort=new&limit=300', 'user_data/' + username + '/mech_100.txt', user)
+    alert_response += scrape_reddit_user('http://www.reddit.com/user/eat_the_food/submitted/.rss', 'user_data/mamcus_reddit.txt', user_id, '<@&' + user['discord_role_id'] + '> Possible ETF activity on reddit')
+    alert_response += scrape_reddit_user('http://www.reddit.com/user/poptart_777/submitted/.rss', 'user_data/poptart_reddit.txt', user_id, '<@&' + user['discord_role_id'] + '> Possible Switchnollie activity on reddit')
     return alert_response
 if __name__ == "__main__":
     main()
