@@ -12,14 +12,12 @@ from twilio.rest import Client
 sms = False
 configs = {}
 
-def scrape_rss_posts(rss_url, file_name, configs, user_id):
+def scrape_rss_posts(rss_url, file_name, configs):
     stored_posts = []
-    targets = configs['targets']
+    targets = configs['reddit_cfg']['targets']
     report = True
     if os.path.isfile(file_name):
         stored_posts = read_temp(file_name)
-    # else:
-    #     report = False
 
     # Scrapes reddit
     d = feedparser.parse(rss_url)
@@ -33,7 +31,7 @@ def scrape_rss_posts(rss_url, file_name, configs, user_id):
             entry_text = raw_entry.text.lower()
             this_post_md5 = md5_post(raw_entry.text)
             to_store_posts.append(this_post_md5)
-            if this_post_md5+'\n' not in stored_posts:
+            if this_post_md5+'\n' not in stored_posts and len(stored_posts) > 1:
                 match = False
                 for target in targets.items():
                     if isinstance(target[1], str):
@@ -44,25 +42,21 @@ def scrape_rss_posts(rss_url, file_name, configs, user_id):
                         if this_match:
                             match = this_match.group()
 
-                if match:
-                    stanza = '<@' + user_id + '> ' + match + ' found! link: ' + entry.link
-                    if sms:
-                        #sms(stanza)
-                        print('entry')
-                    if report:
-                        alert_response.append(stanza)
+                if match and '/u/' + configs['reddit_cfg']['reddit_id'] != entry.author:
+                    stanza = '<@' + configs['discord_id'] + '> ' + match + ' found! link: ' + entry.link
+                    alert_response.append(stanza)
 
         #TODO bug here, if you don't have a raw_entry (your post is empty), you don't get written to disk. Needs to use entire post as the md5
         #else:
     write_temp(to_store_posts, file_name)
     return alert_response
 
-def scrape_reddit_user(user, file_name, user_id, message):
+def scrape_reddit_user(reddit_url, file_name, user_id, message):
     stored_posts = []
     if os.path.isfile(file_name):
         stored_posts = read_temp(file_name)
 
-    d = feedparser.parse(user) 
+    d = feedparser.parse(reddit_url) 
     to_store_posts = []
     alert_response = []
 
@@ -73,8 +67,15 @@ def scrape_reddit_user(user, file_name, user_id, message):
             entry_text = raw_entry.text
             this_post_md5 = md5_post(raw_entry.text)
             to_store_posts.append(this_post_md5)
-            if this_post_md5+'\n' not in stored_posts:
-                stanza = message + ' ' + entry.link + ' ' + entry_text
+            if this_post_md5+'\n' not in stored_posts and len(stored_posts) > 0:
+                stanza = message + ' ' + entry.link + ' '
+                form_link = entry_text.find('http')
+                print(entry_text)
+                if form_link != -1:
+                    print('http')
+                    linkaroo = entry_text[form_link: form_link + 150]
+                    print(linkaroo)
+                    stanza += 'link to form: ' + linkaroo
                 alert_response.append(stanza)
         #TODO bug here, if you don't have a raw_entry (your post is empty), you don't get written to disk. Needs to use entire post as the md5
         #else:
@@ -88,15 +89,15 @@ def main(user):
     user_id = user['discord_id']
     targets = {}
 
-    for target in configs['targets'].items():
-        if target[1].startswith('^'):
-            targets[target[0]] = re.compile(target[1], re.IGNORECASE)
-        else:
-            targets[target[0]] = target[1]
+    #for target in configs['targets'].items():
+    #    if target[1].startswith('^'):
+    #        targets[target[0]] = re.compile(target[1], re.IGNORECASE)
+    #    else:
+    #        targets[target[0]] = target[1]
 
-    configs['targets'] = targets
+    #configs['targets'] = targets
 
-    alert_response = scrape_rss_posts('https://www.reddit.com/r/mechmarket/new/.rss?sort=new&limit=100', 'user_data/' + username + '/mech_100.txt', configs, user_id)
+    alert_response = scrape_rss_posts('https://www.reddit.com/r/mechmarket/new/.rss?sort=new&limit=300', 'user_data/' + username + '/mech_100.txt', user)
     alert_response += scrape_reddit_user('http://www.reddit.com/user/eat_the_food/submitted/.rss', 'user_data/mamcus_reddit.txt', user_id, '<@&' + user['discord_role_id'] + '> Possible ETF activity on reddit')
     alert_response += scrape_reddit_user('http://www.reddit.com/user/poptart_777/submitted/.rss', 'user_data/poptart_reddit.txt', user_id, '<@&' + user['discord_role_id'] + '> Possible Switchnollie activity on reddit')
     return alert_response

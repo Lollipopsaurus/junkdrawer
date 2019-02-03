@@ -35,8 +35,11 @@ async def on_ready():
             try:
                 task.cancel()
             except Exception as e:
+                print(e)
                 pass
-            client.loop.stop()
+            finally:
+                client.close()
+                client.loop.stop()
 
 configs = get_configs()
 
