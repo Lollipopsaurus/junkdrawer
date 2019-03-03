@@ -41,7 +41,6 @@ def scrape_rss_posts(rss_url, file_name, configs):
                         this_match = target[1].match(entry.title) or target[1].match(entry_text)
                         if this_match:
                             match = this_match.group()
-
                 if match and '/u/' + configs['reddit_cfg']['reddit_id'] != entry.author:
                     stanza = '<@' + configs['discord_id'] + '> ' + match + ' found! link: ' + entry.link
                     alert_response.append(stanza)
@@ -70,7 +69,6 @@ def scrape_reddit_user(reddit_url, file_name, user_id, message):
             if this_post_md5+'\n' not in stored_posts and len(stored_posts) > 0:
                 stanza = message + ' ' + entry.link + ' '
                 form_link = entry_text.find('http')
-                print(entry_text)
                 if form_link != -1:
                     print('http')
                     linkaroo = entry_text[form_link: form_link + 150]
@@ -97,7 +95,7 @@ def main(user):
 
     #configs['targets'] = targets
 
-    alert_response = scrape_rss_posts('https://www.reddit.com/r/mechmarket/new/.rss?sort=new&limit=300', 'user_data/' + username + '/mech_100.txt', user)
+    alert_response = scrape_rss_posts('https://www.reddit.com/r/mechmarket/new/.rss?sort=new&limit=100', 'user_data/' + username + '/mech_100.txt', user)
     alert_response += scrape_reddit_user('http://www.reddit.com/user/eat_the_food/submitted/.rss', 'user_data/mamcus_reddit.txt', user_id, '<@&' + user['discord_role_id'] + '> Possible ETF activity on reddit')
     alert_response += scrape_reddit_user('http://www.reddit.com/user/poptart_777/submitted/.rss', 'user_data/poptart_reddit.txt', user_id, '<@&' + user['discord_role_id'] + '> Possible Switchnollie activity on reddit')
     return alert_response
