@@ -22,7 +22,7 @@ def scrape_rss_posts(rss_url, file_name, configs):
     # Scrapes reddit
     d = feedparser.parse(rss_url)
     to_store_posts = []
-    alert_response = []
+    alert_response = set()
 
     # Looping through all of the entries we scraped
     for entry in d.entries:
@@ -31,7 +31,7 @@ def scrape_rss_posts(rss_url, file_name, configs):
             entry_text = raw_entry.text.lower()
             this_post_md5 = md5_post(raw_entry.text)
             to_store_posts.append(this_post_md5)
-            if this_post_md5+'\n' not in stored_posts and len(stored_posts) > 1:
+            if this_post_md5+'\n' not in stored_posts and len(stored_posts) > 0:
                 match = False
                 for target in targets.items():
                     if isinstance(target[1], str):
@@ -43,7 +43,7 @@ def scrape_rss_posts(rss_url, file_name, configs):
                             match = this_match.group()
                 if match and '/u/' + configs['reddit_cfg']['reddit_id'] != entry.author:
                     stanza = '<@' + configs['discord_id'] + '> ' + match + ' found! link: ' + entry.link
-                    alert_response.append(stanza)
+                    alert_response.add(stanza)
 
         #TODO bug here, if you don't have a raw_entry (your post is empty), you don't get written to disk. Needs to use entire post as the md5
         #else:
@@ -57,7 +57,7 @@ def scrape_reddit_user(reddit_url, file_name, user_id, message):
 
     d = feedparser.parse(reddit_url) 
     to_store_posts = []
-    alert_response = []
+    alert_response = set()
 
     # Looping through all of the entries we scraped
     for entry in d.entries:
@@ -70,11 +70,9 @@ def scrape_reddit_user(reddit_url, file_name, user_id, message):
                 stanza = message + ' ' + entry.link + ' '
                 form_link = entry_text.find('http')
                 if form_link != -1:
-                    print('http')
                     linkaroo = entry_text[form_link: form_link + 150]
-                    print(linkaroo)
                     stanza += 'link to form: ' + linkaroo
-                alert_response.append(stanza)
+                alert_response.add(stanza)
         #TODO bug here, if you don't have a raw_entry (your post is empty), you don't get written to disk. Needs to use entire post as the md5
         #else:
     write_temp(to_store_posts, file_name)
@@ -96,8 +94,9 @@ def main(user):
     #configs['targets'] = targets
 
     alert_response = scrape_rss_posts('https://www.reddit.com/r/mechmarket/new/.rss?sort=new&limit=100', 'user_data/' + username + '/mech_100.txt', user)
-    alert_response += scrape_reddit_user('http://www.reddit.com/user/eat_the_food/submitted/.rss', 'user_data/mamcus_reddit.txt', user_id, '<@&' + user['discord_role_id'] + '> Possible ETF activity on reddit')
-    alert_response += scrape_reddit_user('http://www.reddit.com/user/poptart_777/submitted/.rss', 'user_data/poptart_reddit.txt', user_id, '<@&' + user['discord_role_id'] + '> Possible Switchnollie activity on reddit')
+    alert_response = alert_response.union(scrape_reddit_user('http://www.reddit.com/user/eat_the_food/submitted/.rss', 'user_data/mamcus_reddit.txt', user_id, '<@&' + user['discord_role_id'] + '> Possible ETF activity on reddit'))
+    alert_response = alert_response.union(scrape_reddit_user('http://www.reddit.com/user/poptart_777/submitted/.rss', 'user_data/poptart_reddit.txt', user_id, '<@&' + user['discord_role_id'] + '> Possible Switchnollie activity on reddit'))
+    alert_response = alert_response.union(scrape_reddit_user('http://www.reddit.com/user/spaceghost_n_moltar/submitted/.rss', 'user_data/deathcaps_reddit.txt', user_id, '<@&' + user['discord_role_id'] + '> Possible Death Caps activity on reddit'))
     return alert_response
 if __name__ == "__main__":
     main()

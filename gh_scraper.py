@@ -35,7 +35,7 @@ def scrape_op_url(url, file_name, message):
        print(e)
        return
     to_store_posts = []
-    alert_response = []
+    alert_response = set()
     # Looping through all of the entries we scraped
     soup = BeautifulSoup(d.text, 'html.parser')
     etf_main_post = soup.find('div', attrs={'class':'inner', 'id':'msg_2048390'})
@@ -43,7 +43,7 @@ def scrape_op_url(url, file_name, message):
         this_post_md5 = md5_post(etf_main_post.text)
         to_store_posts.append(this_post_md5)
         if this_post_md5+'\n' not in stored_posts and len(stored_posts) > 0:
-            alert_response.append(message + url + ' ' + etf_main_post.text)
+            alert_response.add(message + url + ' ' + etf_main_post.text)
     write_temp(to_store_posts, file_name)
     return alert_response
 
@@ -57,7 +57,7 @@ def scrape_clack_happens_url(url, file_name, message):
         print(e)
         return
     to_store_posts = []
-    alert_response = []
+    alert_response = set()
 
     soup = BeautifulSoup(d.text, 'html.parser')
     clack_thread = soup.find_all('div', attrs={'class':'post_wrapper'})
@@ -69,19 +69,19 @@ def scrape_clack_happens_url(url, file_name, message):
         if 'Clack Happens #' in clack_happens_post.text:
             to_store_posts.append(this_post_md5)
             if this_post_md5+'\n' not in stored_posts:
-                alert_response.append(message + url + ' ```' + clack_happens_post.text + '``` Refresh here until you can post >>>>>>>>>>>>>>>>>>>> https://geekhack.org/index.php?action=post;topic=98411.0 <<<<<<<<<<<<<<<<<<<<< Press f5 until you can post you dumb motherfucker' )
+                alert_response.add(message + url + ' ```' + clack_happens_post.text + '``` Refresh here until you can post >>>>>>>>>>>>>>>>>>>> https://geekhack.org/index.php?action=post;topic=98411.0 <<<<<<<<<<<<<<<<<<<<< Press f5 until you can post you dumb motherfucker' )
 
     write_temp(to_store_posts, file_name)
     return alert_response
 
 # Main that does stuff
 def main(user):
-    alert_response = []
+    alert_response = set()
     try:
         alert_response = scrape_op_url('https://geekhack.org/index.php?topic=79513.msg2048390#msg2048390', 'user_data/gh_etf.txt', '<@&' + user['discord_role_id'] + '> ETF EDIT ON GH ')
-        alert_response += scrape_clack_happens_url('https://geekhack.org/index.php?topic=98411.18500000', 'user_data/gh_clackhappens.txt', '<@&' + user['discord_role_id'] + '> CLACK HAPPENS ON GH ')
+        alert_response = alert_response.untion(scrape_clack_happens_url('https://geekhack.org/index.php?topic=98411.18500000', 'user_data/gh_clackhappens.txt', '<@&' + user['discord_role_id'] + '> CLACK HAPPENS ON GH '))
     except Exception as e:
-        alert_response = []
+        alert_response = set()
     return alert_response
 if __name__ == "__main__":
     main()

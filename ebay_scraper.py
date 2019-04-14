@@ -18,7 +18,7 @@ def main(user):
     # Scrapes reddit
     d = feedparser.parse('https://www.ebay.com/sch/eat_the_food/m.html?_rss=1')
     to_store_posts = []
-    alert_response = []
+    alert_response = set()
     # Looping through all of the entries we scraped
     for entry in d.entries:
         raw_entry = soupify(entry.summary)
@@ -28,7 +28,7 @@ def main(user):
             to_store_posts.append(this_post_md5)
             if this_post_md5 not in stored_posts:
                 stanza = 'ETF EBAY ALERT + https://www.ebay.com/sch/eat_the_food/m.html?_nkw=&_armrs=1&_ipg=&_from='
-                alert_response.append(stanza)
+                alert_response.add(stanza)
         #TODO bug here, if you don't have a raw_entry (your post is empty), you don't get written to disk. Needs to use entire post as the md5
         #else:
     write_temp(to_store_posts, 'user_data/' + user['name'] + '/' + hashes_file_name)

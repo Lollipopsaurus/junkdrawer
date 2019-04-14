@@ -38,6 +38,7 @@ def main():
                 data_block = []
                 if True:
                     reddit_data = reddit_scraper.main(user)
+                    print(reddit_data)
                     data_block = add_to_list(data_block, reddit_data)
                 if True:
                     ebay_data = ebay_scraper.main(user)
@@ -48,8 +49,8 @@ def main():
                 write_temp(data_block) 
                 if len(data_block):
                     discord_bot.main()
-                data_block = []
-                write_temp(data_block)
+                #data_block = []
+                #write_temp(data_block)
             time.sleep(3)
             #TODO Join threads
 
