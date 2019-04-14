@@ -79,7 +79,7 @@ def main(user):
     alert_response = set()
     try:
         alert_response = scrape_op_url('https://geekhack.org/index.php?topic=79513.msg2048390#msg2048390', 'user_data/gh_etf.txt', '<@&' + user['discord_role_id'] + '> ETF EDIT ON GH ')
-        alert_response = alert_response.untion(scrape_clack_happens_url('https://geekhack.org/index.php?topic=98411.18500000', 'user_data/gh_clackhappens.txt', '<@&' + user['discord_role_id'] + '> CLACK HAPPENS ON GH '))
+        alert_response = alert_response.union(scrape_clack_happens_url('https://geekhack.org/index.php?topic=98411.18500000', 'user_data/gh_clackhappens.txt', '<@&' + user['discord_role_id'] + '> CLACK HAPPENS ON GH '))
     except Exception as e:
         alert_response = set()
     return alert_response

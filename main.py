@@ -35,17 +35,16 @@ def main():
             #TODO spawn threads
             for user in profiles:
                 print('Running user profile: ' + user['name'])
-                data_block = []
+                data_block = set() 
                 if True:
                     reddit_data = reddit_scraper.main(user)
-                    print(reddit_data)
-                    data_block = add_to_list(data_block, reddit_data)
+                    data_block = data_block.union(reddit_data)
                 if True:
                     ebay_data = ebay_scraper.main(user)
-                    data_block = add_to_list(data_block, ebay_data)
+                    data_block = data_block.union(ebay_data)
                 if True:
                     gh_data = gh_scraper.main(user)
-                    data_block = add_to_list(data_block, gh_data)
+                    data_block = data_block.union(gh_data)
                 write_temp(data_block) 
                 if len(data_block):
                     discord_bot.main()
