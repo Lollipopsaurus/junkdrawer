@@ -4,6 +4,7 @@ from configparser import SafeConfigParser
 import ebay_scraper
 import gh_scraper
 import reddit_scraper
+import insta_scraper
 import logging
 import json
 import discord_bot
@@ -45,6 +46,9 @@ def main():
                 if True:
                     gh_data = gh_scraper.main(user)
                     data_block = data_block.union(gh_data)
+                if True:
+                    insta_data = insta_scraper.main(user)
+                    data_block = data_block.union(insta_data)
                 write_temp(data_block) 
                 if len(data_block):
                     discord_bot.main()
