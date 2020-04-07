@@ -46,9 +46,9 @@ def main():
                 if True:
                     gh_data = gh_scraper.main(user)
                     data_block = data_block.union(gh_data)
-                if True:
-                    insta_data = insta_scraper.main(user)
-                    data_block = data_block.union(insta_data)
+                #if True:
+                #    insta_data = insta_scraper.main(user)
+                #    data_block = data_block.union(insta_data)
                 write_temp(data_block) 
                 if len(data_block):
                     discord_bot.main()

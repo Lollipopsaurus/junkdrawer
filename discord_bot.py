@@ -22,7 +22,7 @@ async def on_ready():
     print(client.user.id)
     print('------')
 
-    channel = discord.Object(id=configs['channel_id'])
+    channel = client.get_channel(id=configs['channel_id'])
     count = 0
 
     # Open the notification file (can be whatever notification queue in the future)
@@ -30,7 +30,7 @@ async def on_ready():
         json_obj = json.loads(message_list.read())
         # Send the message for each item in the file
         for message in json_obj:
-            await client.send_message(channel, '' + message)
+            await channel.send(message)
         for task in asyncio.Task.all_tasks():
             try:
                 task.cancel()

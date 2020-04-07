@@ -45,6 +45,7 @@ def scrape_op_url(url, file_name, message):
         if this_post_md5+'\n' not in stored_posts and len(stored_posts) > 0:
             alert_response.add(message + url + ' ' + etf_main_post.text)
     write_temp(to_store_posts, file_name)
+
     return alert_response
 
 def scrape_clack_happens_url(url, file_name, message):
@@ -79,10 +80,13 @@ def main(user):
     alert_response = set()
     try:
         alert_response = scrape_op_url('https://geekhack.org/index.php?topic=79513.msg2048390#msg2048390', 'user_data/gh_etf.txt', '<@&' + user['discord_role_id'] + '> ETF EDIT ON GH ')
-        alert_response = scrape_op_url('https://geekhack.org/index.php?topic=103743.msg2842131#msg2842131', '<@&' + user['discord_role_id'] + '> BISO EDIT ON GH ')
+        #alert_response = alert_response.union(scrape_op_url('https://geekhack.org/index.php?topic=103743.msg2842131#msg2842131', 'user_data/gh_biso.txt', '<@&' + user['discord_role_id'] + '> BISO EDIT ON GH '))
         alert_response = alert_response.union(scrape_clack_happens_url('https://geekhack.org/index.php?topic=98411.18500000', 'user_data/gh_clackhappens.txt', '<@&' + user['discord_role_id'] + '> CLACK HAPPENS ON GH '))
+        alert_response = alert_response.union(scrape_clack_happens_url('https://geekhack.org/index.php?topic=105443.100000000000000000', 'user_data/gh_clackhappens2020.txt', '<@&' + user['discord_role_id'] + '> CLACK HAPPENS ON GH '))
     except Exception as e:
         alert_response = set()
+        print(e)
     return alert_response
+
 if __name__ == "__main__":
     main()
