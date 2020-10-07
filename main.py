@@ -32,10 +32,11 @@ def add_to_list(existing_list, new_list):
 def main():
     with open('user_profiles.cfg', 'r') as user_profiles:
         profiles = json.load(user_profiles)
+        print('started')
         while(True):
             #TODO spawn threads
             for user in profiles:
-                print('Running user profile: ' + user['name'])
+                #print('Running user profile: ' + user['name'])
                 data_block = set() 
                 if True:
                     reddit_data = reddit_scraper.main(user)
@@ -51,8 +52,9 @@ def main():
                 #    data_block = data_block.union(insta_data)
                 write_temp(data_block) 
                 if len(data_block):
+                    print(data_block)
                     discord_bot.main()
-                #data_block = []
+                data_block = set()
                 #write_temp(data_block)
             time.sleep(3)
             #TODO Join threads

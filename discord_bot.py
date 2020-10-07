@@ -15,7 +15,7 @@ def get_configs():
 # on_ready function
 @client.event
 async def on_ready():
-    client.wait_until_ready()
+    await client.wait_until_ready()
     # Bad logging to show that the bot ran
     print('Logged in as')
     print(client.user.name)
@@ -28,18 +28,20 @@ async def on_ready():
     # Open the notification file (can be whatever notification queue in the future)
     with open('notifications.txt', 'r') as message_list:
         json_obj = json.loads(message_list.read())
+        print(json_obj)
         # Send the message for each item in the file
         for message in json_obj:
-            await channel.send(message)
+            print('message: ' + message)
+            await channel.send(content=message)
         for task in asyncio.Task.all_tasks():
             try:
                 task.cancel()
             except Exception as e:
                 print(e)
                 pass
-            finally:
-                client.close()
-                client.loop.stop()
+            #finally:
+            #    await client.close()
+            #    client.loop.stop()
 
 configs = get_configs()
 
@@ -49,7 +51,12 @@ def main():
     except Exception as e:
         pass
     finally:
-        client.logout()
+        try:
+            loop.close()
+            client.clear()
+            client.loop.run_until_complete(client.close()) 
+        except Exception as e:
+            pass
         return
 
 if __name__ == "__main__":

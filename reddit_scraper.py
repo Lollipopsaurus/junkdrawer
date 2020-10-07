@@ -95,8 +95,10 @@ def main(user):
 
     alert_response = scrape_rss_posts('https://www.reddit.com/r/mechmarket/new/.rss?sort=new&limit=100', 'user_data/' + username + '/mech_100.txt', user)
     alert_response = alert_response.union(scrape_reddit_user('http://www.reddit.com/user/eat_the_food/submitted/.rss', 'user_data/mamcus_reddit.txt', user_id, '<@&' + user['discord_role_id'] + '> Possible ETF activity on reddit'))
-    alert_response = alert_response.union(scrape_reddit_user('http://www.reddit.com/user/poptart_777/submitted/.rss', 'user_data/poptart_reddit.txt', user_id, '<@&' + user['discord_role_id'] + '> Possible Switchnollie activity on reddit'))
-    alert_response = alert_response.union(scrape_reddit_user('http://www.reddit.com/user/spaceghost_n_moltar/submitted/.rss', 'user_data/deathcaps_reddit.txt', user_id, '<@&' + user['discord_role_id'] + '> Possible Death Caps activity on reddit'))
+    alert_response = alert_response.union(scrape_reddit_user('http://www.reddit.com/user/poptart_777/submitted/.rss', 'user_data/poptart_reddit.txt', user_id, '<@&690765849036062761> Possible Switchnollie activity on reddit'))
+    alert_response = alert_response.union(scrape_reddit_user('http://www.reddit.com/user/otanishock/submitted/.rss', 'user_data/otani_reddit.txt', user_id, '<@&690765849036062761> Possible otanishock sellout activity on reddit'))
+    #if 'Lollipopsaurus' == username:
+    #    alert_response = alert_response.union(scrape_rss_posts('https://www.reddit.com/r/watchexchange/new/.rss?sort=new&limit=100', 'user_data/' + username + '/watch_100.txt', user))
     return alert_response
 if __name__ == "__main__":
     main()
